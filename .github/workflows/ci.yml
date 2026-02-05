@@ -1,0 +1,75 @@
+name: Continuous Integration for Repairnator
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: repairnator-core
+            test_path: src/repairnator-core/
+            script: ./.ci/ci-run.sh
+          - name: repairnator-realtime
+            test_path: src/repairnator-realtime/
+            script: ./.ci/ci-run-with-core-pipeline.sh
+            test_list: "**"
+          - name: repairnator-jenkins-plugin
+            test_path: src/repairnator-jenkins-plugin/
+            script: ./.ci/ci-run.sh
+          - name: repairnator-maven-repair
+            test_path: src/maven-repair/
+            script: ./.ci/ci-maven-repair.sh
+            test_list: "**"
+          - name: repairnator-pipeline
+            test_path: src/repairnator-pipeline/
+            script: ./.ci/ci-run-with-core.sh
+            test_list: "**"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cloc shunit2 xmlstarlet libgomp1
+        sudo npm install -g ajv-cli
+
+    - name: Check Maven Home
+      run: |
+        # Ensure /usr/share/maven exists as expected by the scripts
+        if [ ! -d "/usr/share/maven" ]; then
+          echo "/usr/share/maven not found. Creating symlink from $M2_HOME or using mvn location."
+          if [ -n "$M2_HOME" ]; then
+            sudo ln -s "$M2_HOME" /usr/share/maven
+          else
+             sudo ln -s /usr/share/apache-maven-* /usr/share/maven || true
+          fi
+        fi
+
+    - name: Run Test Script
+      env:
+        TEST_PATH: ${{ matrix.test_path }}
+        TEST_LIST: ${{ matrix.test_list }}
+        GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        bash ${{ matrix.script }}
