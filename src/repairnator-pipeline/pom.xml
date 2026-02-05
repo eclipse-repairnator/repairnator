@@ -297,7 +297,7 @@
                     <groupId>fr.inria.gforge.spirals</groupId>
                     <artifactId>nopol</artifactId>
                     <!--Mar 18, 2021, 2:06 PM GMT-->
-                    <version>689e97eab451a671378b3fd55f790a39ce0d21d3</version>
+                    <version>0.3-SNAPSHOT</version>
                     <exclusions>
                         <exclusion>
                             <groupId>org.osgi.service</groupId>
