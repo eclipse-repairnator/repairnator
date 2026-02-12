@@ -4,7 +4,7 @@
 
     <groupId>fr.inria.repairnator</groupId>
     <artifactId>repairnator-root</artifactId>
-    <version>${revision}</version>
+    <version>3.4</version>
     <packaging>pom</packaging>
     <name>repairnator-root</name>
     <inceptionYear>2017</inceptionYear>
