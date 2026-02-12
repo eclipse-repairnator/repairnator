@@ -26,7 +26,7 @@
         <java.src.version>1.8</java.src.version>
         <java.test.version>1.8</java.test.version>
 
-        <npefix.version>0.7</npefix.version>
+        <npefix.version>0.9-SNAPSHOT</npefix.version>
         <!--do not upgrade to >= 3.6.0, as it will cause a compatibility issue with other guava dependencies-->
         <maven.version>3.5.4</maven.version>
     </properties>

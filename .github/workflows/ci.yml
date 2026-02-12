@@ -23,5 +23,5 @@ jobs:
 
     - name: Run Test Script
       run: |
-        mvn test
+        mvn install -B
 
