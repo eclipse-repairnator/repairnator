@@ -196,7 +196,7 @@
         <dependency>
             <groupId>fr.inria.gforge.spirals</groupId>
             <artifactId>npefix</artifactId>
-            <version>0.8</version>
+            <version>0.9-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -233,6 +233,18 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>fr.inria.gforge.spirals</groupId>
+            <artifactId>nopol</artifactId>
+            <!--Mar 18, 2021, 2:06 PM GMT-->
+            <version>0.3-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.osgi.service</groupId>
+                    <artifactId>org.osgi.service.prefs</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -286,51 +298,4 @@
         </plugins>
     </build>
 
-    <profiles>
-        <profile>
-            <id>nopol</id>
-            <activation>
-                <jdk>1.8</jdk>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>fr.inria.gforge.spirals</groupId>
-                    <artifactId>nopol</artifactId>
-                    <!--Mar 18, 2021, 2:06 PM GMT-->
-                    <version>0.3-SNAPSHOT</version>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>org.osgi.service</groupId>
-                            <artifactId>org.osgi.service.prefs</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-            </dependencies>
-        </profile>
-        <profile>
-            <id>noNopol</id>
-            <activation>
-                <jdk>[1.9,1.16)</jdk>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <dependencies>
-                <dependency>
-                    <groupId>fr.inria.gforge.spirals</groupId>
-                    <artifactId>nopol</artifactId>
-                    <!--Mar 18, 2021, 2:06 PM GMT-->
-                    <version>689e97eab451a671378b3fd55f790a39ce0d21d3</version>
-                    <exclusions>
-                        <exclusion>
-                            <groupId>com.sun</groupId>
-                            <artifactId>tools</artifactId>
-                        </exclusion>
-                        <exclusion>
-                            <groupId>org.osgi.service</groupId>
-                            <artifactId>org.osgi.service.prefs</artifactId>
-                        </exclusion>
-                    </exclusions>
-                </dependency>
-            </dependencies>
-        </profile>
-    </profiles>
 </project>
