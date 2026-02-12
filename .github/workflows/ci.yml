@@ -51,6 +51,35 @@ jobs:
       run: |
         bash ./.ci/ci-run.sh
 
+  repairnator-pipeline:
+    name: repairnator-pipeline
+    runs-on: ubuntu-latest
+    needs: repairnator-maven-repair
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v4
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cloc shunit2 xmlstarlet libgomp1
+        sudo npm install -g ajv-cli
+
+    - name: Run Test Script
+      env:
+        TEST_PATH: src/repairnator-pipeline/
+        TEST_LIST: "**"
+        GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        bash ./.ci/ci-run-with-core.sh
+        
   repairnator-realtime:
     name: repairnator-realtime
     runs-on: ubuntu-latest
@@ -71,18 +100,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y cloc shunit2 xmlstarlet libgomp1
         sudo npm install -g ajv-cli
-
-    - name: Check Maven Home
-      run: |
-        # Ensure /usr/share/maven exists as expected by the scripts
-        if [ ! -d "/usr/share/maven" ]; then
-          echo "/usr/share/maven not found. Creating symlink from $M2_HOME or using mvn location."
-          if [ -n "$M2_HOME" ]; then
-            sudo ln -s "$M2_HOME" /usr/share/maven
-          else
-             sudo ln -s /usr/share/apache-maven-* /usr/share/maven || true
-          fi
-        fi
 
     - name: Run Test Script
       env:
@@ -107,28 +124,11 @@ jobs:
         distribution: 'temurin'
         cache: 'maven'
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '16'
-
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y cloc shunit2 xmlstarlet libgomp1
         sudo npm install -g ajv-cli
-
-    - name: Check Maven Home
-      run: |
-        # Ensure /usr/share/maven exists as expected by the scripts
-        if [ ! -d "/usr/share/maven" ]; then
-          echo "/usr/share/maven not found. Creating symlink from $M2_HOME or using mvn location."
-          if [ -n "$M2_HOME" ]; then
-            sudo ln -s "$M2_HOME" /usr/share/maven
-          else
-             sudo ln -s /usr/share/apache-maven-* /usr/share/maven || true
-          fi
-        fi
 
     - name: Run Test Script
       env:
@@ -183,48 +183,3 @@ jobs:
       run: |
         bash ./.ci/ci-maven-repair.sh
 
-  repairnator-pipeline:
-    name: repairnator-pipeline
-    runs-on: ubuntu-latest
-    needs: repairnator-maven-repair
-
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up JDK 8
-      uses: actions/setup-java@v4
-      with:
-        java-version: '8'
-        distribution: 'temurin'
-        cache: 'maven'
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '16'
-
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y cloc shunit2 xmlstarlet libgomp1
-        sudo npm install -g ajv-cli
-
-    - name: Check Maven Home
-      run: |
-        # Ensure /usr/share/maven exists as expected by the scripts
-        if [ ! -d "/usr/share/maven" ]; then
-          echo "/usr/share/maven not found. Creating symlink from $M2_HOME or using mvn location."
-          if [ -n "$M2_HOME" ]; then
-            sudo ln -s "$M2_HOME" /usr/share/maven
-          else
-             sudo ln -s /usr/share/apache-maven-* /usr/share/maven || true
-          fi
-        fi
-
-    - name: Run Test Script
-      env:
-        TEST_PATH: src/repairnator-pipeline/
-        TEST_LIST: "**"
-        GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        bash ./.ci/ci-run-with-core.sh
