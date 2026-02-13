@@ -6,7 +6,6 @@
         <version>9</version>
     </parent>
 
-
     <groupId>fr.inria.gforge.spirals</groupId>
     <artifactId>repair-maven-plugin</artifactId>
     <version>1.6-SNAPSHOT</version>
