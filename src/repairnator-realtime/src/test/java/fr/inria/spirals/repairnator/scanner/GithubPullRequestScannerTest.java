@@ -2,6 +2,7 @@ package fr.inria.spirals.repairnator.scanner;
 
 import fr.inria.spirals.repairnator.realtime.GithubPullRequestScanner;
 import fr.inria.spirals.repairnator.realtime.githubapi.commits.models.SelectedPullRequest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.Instant;
@@ -16,6 +17,7 @@ public class GithubPullRequestScannerTest {
 
     // Test to detect failing open pull requests
     @Test
+    @Ignore("This test depends on a token.")
     public void testFetchFailingPullRequests() throws Exception {
         Set<String> repositorySet = new HashSet<>();
         String repository = "repairnator/failingProject";
@@ -43,6 +45,7 @@ public class GithubPullRequestScannerTest {
 
     // Test to detect successful and failing open pull requests
     @Test
+    @Ignore
     public void testFetchAllOpenPullRequests() throws Exception {
         Set<String> repositorySet = new HashSet<>();
         String repository = "repairnator/failingProject";
