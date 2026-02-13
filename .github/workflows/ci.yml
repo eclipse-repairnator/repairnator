@@ -24,4 +24,6 @@ jobs:
     - name: Run Test Script
       run: |
         mvn install -B
+        mvn install -f src/maven-repair/
+
 
