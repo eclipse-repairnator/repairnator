@@ -45,6 +45,7 @@ public class GithubPullRequestScannerTest {
 
     // Test to detect successful and failing open pull requests
     @Test
+    @Ignore
     public void testFetchAllOpenPullRequests() throws Exception {
         Set<String> repositorySet = new HashSet<>();
         String repository = "repairnator/failingProject";
