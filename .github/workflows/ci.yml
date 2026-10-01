@@ -22,6 +22,8 @@ jobs:
         cache: 'maven'
 
     - name: Run Test Script
+      env:
+        GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
       run: |
         mvn install -B
 
